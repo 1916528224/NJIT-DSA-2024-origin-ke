@@ -2,12 +2,12 @@ package oy.tol.tra;
 
 class TreeToArrayVisitor<K extends Comparable<K>, V> implements Visitor<K, V> {
 
-   private Pair<K, V> [] elements;
+   private Pair<K, V>[] elements;
    private int count = 0;
 
-   @java.lang.SuppressWarnings({"unchecked"})
+   @java.lang.SuppressWarnings({ "unchecked" })
    public TreeToArrayVisitor(int count) {
-      elements = (Pair<K,V>[])new Pair[count];
+      elements = (Pair<K, V>[]) new Pair[count];
       count = 0;
    }
 
@@ -19,7 +19,7 @@ class TreeToArrayVisitor<K extends Comparable<K>, V> implements Visitor<K, V> {
       elements[count++] = new Pair<>(node.keyValue.getKey(), node.keyValue.getValue());
       if (node.list != null) {
          for (int index = 0; index < node.list.size(); index++) {
-            Pair<K,V> item = node.list.get(index);
+            Pair<K, V> item = node.list.get(index);
             elements[count++] = new Pair<K, V>(item.getKey(), item.getValue());
          }
       }
@@ -28,8 +28,8 @@ class TreeToArrayVisitor<K extends Comparable<K>, V> implements Visitor<K, V> {
       }
    }
 
-   Pair<K, V> [] getArray() {
+   Pair<K, V>[] getArray() {
       return elements;
    }
-   
+
 }

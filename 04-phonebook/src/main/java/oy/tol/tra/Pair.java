@@ -48,7 +48,7 @@ public class Pair<K extends Comparable<K>, V> implements Comparable<Pair<K, V>> 
       if (getClass() != obj.getClass()) {
          return false;
       }
-      Pair<?,?> other = (Pair<?,?>) obj;
+      Pair<?, ?> other = (Pair<?, ?>) obj;
       if (key == null) {
          if (other.key != null) {
             return false;

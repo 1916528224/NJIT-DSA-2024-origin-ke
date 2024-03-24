@@ -11,13 +11,12 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
 
     @Override
     public Type getType() {
-        return Type.NONE;
+        return Type.BST;
     }
 
     @Override
     public int size() {
-        // TODO: Implement this
-        return 0;
+        return count;
     }
 
     /**
@@ -48,21 +47,51 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
 
     @Override
     public boolean add(K key, V value) throws IllegalArgumentException, OutOfMemoryError {
-        // TODO: Implement this
         // Remember null check.
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null!");
+        }
         // If root is null, should go there.
-        
-            // update the root node. But it may have children
-            // so do not just replace it with this new node but set
-            // the keys and values for the already existing root.
-            
+        if (root == null) {
+            root = new TreeNode<>(key, value);
+            count++;
+            return true;
+        }
+
+        // update the root node. But it may have children
+        // so do not just replace it with this new node but set
+        // the keys and values for the already existing root.
+
+        int hash = key.hashCode();
+        int added = root.insert(key, value, hash);
+
+        // Update the maximum tree depth
+        int currentDepth = TreeNode.currentAddTreeDepth;
+        if (currentDepth > maxTreeDepth) {
+            maxTreeDepth = currentDepth;
+        }
+        TreeNode.currentAddTreeDepth = 0;
+
+        if (added > 0) {
+            count++;
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public V find(K key) throws IllegalArgumentException {
-        // TODO: Implement this. //Think about this
-        return (null);
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null!");
+        }
+
+        if (root == null) {
+            return null;
+        }
+
+        int hash = key.hashCode();
+        return root.find(key, hash);
     }
 
     @Override

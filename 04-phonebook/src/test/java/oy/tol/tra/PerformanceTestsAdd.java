@@ -28,7 +28,7 @@ public class PerformanceTestsAdd {
 	private static final String separator = ",";
 	private static int currentIndex = 0;
 	private static BufferedWriter writer = null;
-	private static final Integer[] population = { 100, 1000, 10000, 50000, 100000, 500000, 1000000, 2000000,  5000000 };
+	private static final Integer[] population = { 100, 1000, 10000, 50000, 100000, 500000, 1000000, 2000000, 5000000 };
 	private static final String[] testFiles = { "village.txt", "small-town.txt", "town.txt", "large-town.txt",
 			"city.txt", "large-city.txt", "metropolis.txt", "capital.txt", "megalopolis.txt" };
 
@@ -36,7 +36,7 @@ public class PerformanceTestsAdd {
 	static void openOutputFile() {
 		try {
 			writer = new BufferedWriter(new FileWriter(outputFileName));
-			writer.append("** Analysing add(key, value) speed **");
+			writer.append("** Analysing ad d(key, value) speed **");
 			writer.newLine();
 			writer.append("testfile,bytes,elements,time (ms)");
 			writer.newLine();
@@ -48,7 +48,7 @@ public class PerformanceTestsAdd {
 
 	@Test
 	@Order(1)
-	//@Timeout(value = 600, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+	// @Timeout(value = 600, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 	void handleReadTestFilesWithBST() {
 		if (null != writer) {
 			try {
@@ -62,7 +62,8 @@ public class PerformanceTestsAdd {
 					long fileSize = file.length();
 					file = null;
 					Dictionary<Person, PhoneNumber> fastBST = new KeyValueBSearchTree<>();
-					assertEquals(Dictionary.Type.BST, fastBST.getType(), () -> "KeyValueBSearchTree.getType() returns wrong value, not yet implemented?");
+					assertEquals(Dictionary.Type.BST, fastBST.getType(),
+							() -> "KeyValueBSearchTree.getType() returns wrong value, not yet implemented?");
 					long start = System.currentTimeMillis();
 					readPersonsFromFile(testFiles[currentIndex], fastBST);
 					long end = System.currentTimeMillis();
@@ -95,7 +96,7 @@ public class PerformanceTestsAdd {
 
 	@Test
 	@Order(2)
-	//@Timeout(value = 600, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+	// @Timeout(value = 600, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 	void handleReadTestFilesWithHashTable() {
 		if (null != writer) {
 			try {
@@ -108,7 +109,8 @@ public class PerformanceTestsAdd {
 					long fileSize = file.length();
 					file = null;
 					Dictionary<Person, PhoneNumber> fastHashTable = new KeyValueHashTable<>();
-					assertEquals(Dictionary.Type.HASHTABLE, fastHashTable.getType(), () -> "KeyValueHashTable.getType() returns wrong value, not yet implemented?");
+					assertEquals(Dictionary.Type.HASHTABLE, fastHashTable.getType(),
+							() -> "KeyValueHashTable.getType() returns wrong value, not yet implemented?");
 					long start = System.currentTimeMillis();
 					readPersonsFromFile(testFiles[currentIndex], fastHashTable);
 					long end = System.currentTimeMillis();
@@ -139,7 +141,6 @@ public class PerformanceTestsAdd {
 		}
 	}
 
-
 	@AfterAll
 	static void closeOutputFile() {
 		try {
@@ -149,17 +150,18 @@ public class PerformanceTestsAdd {
 		}
 	}
 
-	static private void readPersonsFromFile(String fileName, Dictionary<Person, PhoneNumber> toPhoneBook) throws IOException {
+	static private void readPersonsFromFile(String fileName, Dictionary<Person, PhoneNumber> toPhoneBook)
+			throws IOException {
 		BufferedReader phoneBookReader = new BufferedReader(new FileReader(fileName, StandardCharsets.UTF_8));
 		String line;
 		while ((line = phoneBookReader.readLine()) != null && line.length() > 0) {
-			 String personElements[] = line.split(",");
-			 if (personElements.length == 5) {
-				  Person person = new Person(personElements[0], personElements[1]);
-				  PhoneNumber number = new PhoneNumber(personElements[2], personElements[3], personElements[4]);
-				  toPhoneBook.add(person, number);
-			 }
+			String personElements[] = line.split(",");
+			if (personElements.length == 5) {
+				Person person = new Person(personElements[0], personElements[1]);
+				PhoneNumber number = new PhoneNumber(personElements[2], personElements[3], personElements[4]);
+				toPhoneBook.add(person, number);
+			}
 		}
 		phoneBookReader.close();
-  }
+	}
 }
