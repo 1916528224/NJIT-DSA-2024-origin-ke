@@ -45,6 +45,10 @@ public class StackImplementation<E> implements StackInterface<E> {
     *                                  array.
     */
    public StackImplementation(int capacity) throws StackAllocationException {
+      if (capacity < 2) {
+         throw new StackAllocationException("Stack should be at least 2.");
+      }
+      this.itemArray = new Object[capacity];
       this.capacity = capacity;
    }
 
@@ -54,38 +58,35 @@ public class StackImplementation<E> implements StackInterface<E> {
    }
 
    @Override
-   public void push(E element) throws StackAllocationException, NullPointerException {
-      if (element == null) {
-         throw new NullPointerException("Element cannot be null");
+public void push(E element) throws StackAllocationException, NullPointerException {
+    if (element == null) {
+        throw new NullPointerException("Element cannot be null");
       }
-      if (this.capacity() < 2) {
-         throw new StackAllocationException("Stack capacity is less than 2");
-      } else {
-         try {
-            if (this.itemArray == null) {
-               this.itemArray = new Object[capacity];
-            }
-            if (this.currentIndex + 1 == this.itemArray.length) {
-               Object[] dest = new Object[this.capacity() + DEFAULT_STACK_SIZE];
-               System.arraycopy(this.itemArray, 0, dest, 0, this.itemArray.length);
-               this.itemArray = dest;
-               this.capacity += DEFAULT_STACK_SIZE;
-            }
-            this.itemArray[++this.currentIndex] = element;
-         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new StackAllocationException("Stack capacity is not enough");
-         }
+    
+    if (currentIndex == capacity - 1) {
+      int newCapacity = capacity * 2;
+      Object[] newArray = new Object[newCapacity];
+      for (int i = 0; i < capacity; i++) {
+         newArray[i] = itemArray[i];
       }
+      itemArray = newArray;
+      capacity = newCapacity;
    }
+    
+    currentIndex++;
+    itemArray[currentIndex] = element;
+}
 
    @SuppressWarnings("unchecked")
    @Override
    public E pop() throws StackIsEmptyException {
       if (this.currentIndex == -1) {
          throw new StackIsEmptyException("Stack is empty");
-      } else {
-         return (E) this.itemArray[this.currentIndex--];
       }
+      E tmp = (E) itemArray[currentIndex];
+      itemArray[currentIndex] = null;
+      currentIndex--;
+      return tmp;
    }
 
    @SuppressWarnings("unchecked")
