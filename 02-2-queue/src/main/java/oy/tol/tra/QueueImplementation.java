@@ -25,22 +25,22 @@ public class QueueImplementation<E> implements QueueInterface<E> {
         if (element == null) {
             throw new NullPointerException("Cannot enqueue null element.");
         }
-        if (tail + 1 > capacity) {
-            try {
-                capacity = capacity + 10;
-                Object[] newItemArray = new Object[capacity];
-                for (int i = 0; i < size; i++) {
-                    newItemArray[i] = itemArray[head + i];
-                }
-                itemArray = newItemArray;
-                head = 0;
-                tail = size;
-            } catch (Exception e) {
-                throw new QueueAllocationException("No room for queue.");
+        if (size == capacity) {
+            int newCapacity = capacity * 2;
+            Object[] newArray = new Object[newCapacity];
+
+            for (int i = 0; i < size; i++) {
+                newArray[i] = itemArray[(head + i) % capacity];
             }
+
+            itemArray = newArray;
+            capacity = newCapacity;
+            head = 0;
+            tail = size;
         }
+
         itemArray[tail] = element;
-        tail++;
+        tail = (tail + 1) % capacity;
         size++;
     }
 
@@ -52,7 +52,7 @@ public class QueueImplementation<E> implements QueueInterface<E> {
         }
         E element = (E) itemArray[head];
         itemArray[head] = null;
-        head++;
+        head = (head + 1) % capacity;
         size--;
         return element;
     }
@@ -94,8 +94,10 @@ public class QueueImplementation<E> implements QueueInterface<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
+        int curIdx;
         for (int i = 0; i < size; i++) {
-            sb.append(itemArray[head + i]);
+            curIdx = (head + i) % capacity;
+            sb.append(itemArray[curIdx]);
             if (i < size - 1) {
                 sb.append(", ");
             }
