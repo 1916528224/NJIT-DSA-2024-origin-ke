@@ -1,4 +1,4 @@
-package oy.tol.tra;
+package oy.tol.tira.books;
 
 import java.util.Comparator;
 import java.util.function.Predicate;
